@@ -82,7 +82,7 @@ char *merge_sorted(char *str1, char *str2)
 	int len1 = strlen(str1);
 	int len2 = strlen(str2);
 	
-	char *new = (char *)calloc((len1+len2), sizeof(char));
+	char *new = (char *)calloc((len1+len2-1), sizeof(char));
 	new[len1+len2] = '\0';
 	char *tmp = new;
 	
