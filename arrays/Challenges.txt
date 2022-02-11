@@ -1,0 +1,9 @@
+Arrays:
+Done:
+https://leetcode.com/problems/two-sum/description/
+https://leetcode.com/problems/move-zeroes/description/
+https://leetcode.com/problems/rotate-array/description/
+To do:
+https://leetcode.com/problems/contains-duplicate/description/
+https://leetcode.com/problems/maximum-subarray/description/
+https://coderbyte.com/information/Longest%20Word

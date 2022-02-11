@@ -32,6 +32,8 @@ void rotate_array(int *x, int size, int k)
 	for (i=0;i<k;i++)
 		x[i] = tmp[i];
 	
+	free(tmp);
+	
 	return;
 }
 	
