@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SWAP(a,b)	do { (a) = (a)+(b); \
+						 (b) = (a)-(b); \
+						 (a) = (a)-(b); \
+					   } while(0)
+				   
 char lookup(char *str, int index)
 {
 	return str[index];
@@ -58,6 +63,55 @@ void delete(char *str, int index)
 	return;	
 }
 
+void reverse(char *str)
+{
+	int i;
+	int len = strlen(str);
+	char tmp;
+	
+	for (i=0;i<len/2;i++)
+		SWAP(str[i], str[len-1-i]);
+	
+	return;
+}
+
+// merge sorted arrays
+char *merge_sorted(char *str1, char *str2)
+{
+	int i, cnt=0;
+	int len1 = strlen(str1);
+	int len2 = strlen(str2);
+	
+	char *new = (char *)calloc((len1+len2), sizeof(char));
+	new[len1+len2] = '\0';
+	char *tmp = new;
+	
+	char *src1 = str1;
+	char *src2 = str2;
+		
+	while (1)
+	{
+		if (!*src1 || !*src2)
+			break;
+		if (*src1 < *src2)
+			*tmp++ = *src1++;
+		else 
+			*tmp++ = *src2++;
+		cnt++;
+	}
+	//printf("%s, %s, 1[%s], 2[%s] new[%s]\n", str1, str2, src1, src2, new);
+	//printf("len1[%d], len2[%d], cnt[%d]\n", len1, len2, cnt);
+	for (i=cnt;i<(len1+len2);i++)
+	{
+		if (*src1)
+			*tmp++ = *src1++;
+		else
+			*tmp++ = *src2++;
+	}
+	
+	return new;
+}
+
 int main()
 {
 	char str[] = "Hello there!";
@@ -71,7 +125,7 @@ int main()
 	
 	item = 2;
 	new = push(str, item);
-	printf("String: %s, pushed '%c', after push: %s\n", str, item, new);
+	printf("String: %s, pushed '%c', ((new string)) after push: %s\n", str, item, new);
 	free(new);
 	
 	printf("String: %s, ", str);
@@ -81,13 +135,34 @@ int main()
 	printf("String: %s, ", str);
 	index = 2; item = 'z';
 	new = insert(str, index, item);
-	printf("inserted '%c' at %d, after insert: %s\n", item, index, new);
+	printf("inserted '%c' at %d, ((new string)) after insert: %s\n", item, index, new);
 	free(new);
 	
 	printf("String: %s, ", str);
 	index = 4;
 	delete(str, index);
 	printf("delete at index %d, after delete: %s\n", index, str);
+	
+	printf("String: %s, ", str);
+	reverse(str);
+	printf("reversed: %s\n", str);
+
+	char str1[] = "0234789";
+	char str2[] = "01234569";
+	printf("Merge of %s and %s: %s\n", str1, str2, merge_sorted(str1, str2));
+	printf("Merge of %s and %s: %s\n", str2, str1, merge_sorted(str1, str2));
+	free(new);
+
+	char str3[] = "01";
+	char str4[] = "12";
+	printf("Merge of %s and %s: %s\n", str3, str4, merge_sorted(str3, str4));
+	printf("Merge of %s and %s: %s\n", str4, str3, merge_sorted(str4, str3));
+	free(new);
+	
+	char str5[] = "0";
+	char str6[] = "0";
+	printf("Merge of %s and %s: %s\n", str5, str6, merge_sorted(str5, str6));
+	free(new);
 	
 	return 0;
 }
