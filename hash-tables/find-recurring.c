@@ -3,11 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define FOUND       (0)
-#define NOT_FOUND   (-1)
 #define INIT		(-100)
-
-#define MAX(a,b)    ((a)>(b)?(a):(b))
 
 int *hashtable;
 int sz_hashtable;
