@@ -4,9 +4,6 @@
 #define TRUE		(0)
 #define FALSE		(-1)
 
-#define FOUND		(1)
-#define NOT_FOUND	(0)
-
 #define MAX(a,b)	((a)>(b)?(a):(b))
 
 typedef struct bnode 
@@ -69,7 +66,7 @@ void insert(bnode_t *btree, int val)
 	return;
 }
 
-int search(bnode_t *btree, int x)
+void search(bnode_t *btree, int x)
 {
 	bnode_t *tmp;
 	int srchs = 0;
@@ -79,7 +76,7 @@ int search(bnode_t *btree, int x)
 	if (btree_empty==TRUE)
 	{
 		printf("Tree empty!\n");
-		return NOT_FOUND;
+		return;
 	}
 
 	tmp = btree;
@@ -89,7 +86,7 @@ int search(bnode_t *btree, int x)
 		if (tmp->val == x)
 		{
 			printf("%d found - took %d searches!\n" , x, srchs);
-			return FOUND;
+			return;
 		}
 		
 		srchs++;
@@ -100,7 +97,7 @@ int search(bnode_t *btree, int x)
 	}
 	
 	printf("%d not found even after %d searches!\n", x, srchs);
-	return NOT_FOUND;
+	return;
 }
 
 // find the node with min val given a starting node
@@ -115,7 +112,7 @@ bnode_t *find_min_node(bnode_t *start)
 	return tmp;
 }
 	
-int delete(bnode_t *btree, int x)
+void delete(bnode_t *btree, int x)
 {
 	bnode_t *tmp, *up;
 	
@@ -124,7 +121,7 @@ int delete(bnode_t *btree, int x)
 	if (btree_empty==TRUE)
 	{
 		printf("Tree empty!\n");
-		return NOT_FOUND;
+		return;
 	}
 
 	tmp = btree;
@@ -140,7 +137,7 @@ int delete(bnode_t *btree, int x)
 		if (tmp==NULL)
 		{
 			printf("%d not found!\n", x);
-			return NOT_FOUND;
+			return;
 		}
 		
 		//printf("upval - %d, tmpval - %d\n", up->val, tmp->val);
@@ -180,12 +177,11 @@ int delete(bnode_t *btree, int x)
 			}
 			
 			printf("%d deleted!\n", x);
-			return FOUND;
+			return;
 		}
 	}
 	
-	printf("%d not found!\n", x);
-	return NOT_FOUND;
+	return;
 }
 
 int main()
