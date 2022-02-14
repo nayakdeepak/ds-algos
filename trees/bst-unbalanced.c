@@ -40,15 +40,14 @@ void insert(bnode_t *btree, int val)
 	int level = 0;
 	while(tmp != NULL)
 	{
+		up = tmp;
 		if (val < tmp->val)
 		{
-			up = tmp;
 			tmp = tmp->left;
 			printf("L ");
 		}
 		else
 		{
-			up = tmp;
 			tmp = tmp->right;
 			printf("R ");
 		}
@@ -104,6 +103,91 @@ int search(bnode_t *btree, int x)
 	return NOT_FOUND;
 }
 
+// find the node with min val given a starting node
+bnode_t *find_min_node(bnode_t *start)
+{
+	bnode_t *tmp;
+	
+	tmp = start;
+	while(tmp && tmp->left != NULL)
+		tmp = tmp->left;
+	
+	return tmp;
+}
+	
+int delete(bnode_t *btree, int x)
+{
+	bnode_t *tmp, *up;
+	
+	printf("Delete: ");
+	
+	if (btree_empty==TRUE)
+	{
+		printf("Tree empty!\n");
+		return NOT_FOUND;
+	}
+
+	tmp = btree;
+	
+	while(1)
+	{
+		up = tmp;
+		if (x < tmp->val)
+			tmp = tmp->left;
+		else
+			tmp = tmp->right;
+
+		if (tmp==NULL)
+		{
+			printf("%d not found!\n", x);
+			return NOT_FOUND;
+		}
+		
+		//printf("upval - %d, tmpval - %d\n", up->val, tmp->val);
+		if (tmp->val == x)
+		{
+			// leaf node - no child
+			if ((tmp->left==NULL) && (tmp->right==NULL))
+			{
+				if (x < up->val)
+					up->left = NULL;
+				else
+					up->right = NULL;
+			}
+			
+			// node with only 1 child
+			if (tmp->left == NULL)
+			{
+				up->right = tmp->right;
+				free(tmp);
+			}
+			else if (tmp->right == NULL)
+			{
+				up->left = tmp->left;
+				free(tmp);
+			}
+			else // worst case - both children exist!
+			{
+				printf("Worst case! ");
+				bnode_t *min_node = find_min_node(tmp->right);
+				//printf("Min node [%d]\n",  min_node->val);
+				if (x < up->val)
+					up->left = min_node;
+				else
+					up->right = min_node;
+				min_node->right = tmp->right;
+				free(tmp);
+			}
+			
+			printf("%d deleted!\n", x);
+			return FOUND;
+		}
+	}
+	
+	printf("%d not found!\n", x);
+	return NOT_FOUND;
+}
+
 int main()
 {
 	bnode_t *btree = (bnode_t *)calloc(1, sizeof(bnode_t));
@@ -111,10 +195,14 @@ int main()
 	insert(btree, 9);
 	insert(btree, 4);
 	insert(btree, 6);
+	insert(btree, 5);
+	insert(btree, 7);
+	insert(btree, 8);
 	insert(btree, 20);
 	insert(btree, 170);	
 	insert(btree, 15);	
 	insert(btree, 1);
+	insert(btree, 0);
 	insert(btree, 16);
 	
 	printf("\n");
@@ -123,6 +211,27 @@ int main()
 	search(btree, -10);
 	search(btree, 170);
 	search(btree, 16);
+	
+#if 1
+	delete(btree, 1);
+	search(btree, 1);
+	search(btree, 0);
+#endif
+
+#if 1
+	delete(btree, 15);
+	search(btree, 15);
+	search(btree, 16);
+#endif
+
+	delete(btree, 1099);
+	
+	delete(btree, 4);
+	search(btree, 4);
+	search(btree, 5);
+	search(btree, 6);
+	search(btree, 7);
+	search(btree, 8);
 	
 	return 0;
 }
