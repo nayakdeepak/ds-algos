@@ -1,21 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// protos
-void swap(int *x, int *y);
-void print_array(int *array, int size);
-
-// funcs
-void swap(int *x, int *y)
-{
-	int tmp;
-	int *t = &tmp;
-	
-	*t = *x;
-	*x = *y;
-	*y = *t;
-}
-
 void print_array(int *array, int size)
 {
 	int i;
